@@ -1,7 +1,7 @@
 //want to use this component to show the currently active question to the user.
 //and when the user clicks on a question, I want to switch to a different question.
 //so this comp is responsible for switching questions and for registering answers.
-import React from 'react'
+import React, { useCallback } from 'react'
 import {useState} from 'react'
 import QUSETIONS from "../questions";
 import quizCompleteImg from "../assets/quiz-complete.png";
@@ -20,15 +20,20 @@ const activeQuestionIndex=userAnswers.length;
 //Hence, activeQuestionIndex=2=userAnswer.length
 
 
-function handleSelectedAnswer(selectedOption)
-{//when state is updated,entire state gets overrwitten.
+const handleSelectedAnswer=useCallback(function handleSelectedAnswer(selectedOption)
+{
+    //when state is updated,entire state gets overrwitten.
     //Therefore, always copy the previous data and then add new data point.
     setUserAnswers((prev)=>
     {return [...prev,selectedOption]});
 
-}
+},[]);
 
-
+const handleSkipAnswer=useCallback(()=>{handleSelectedAnswer(null)},[handleSelectedAnswer])
+//Now whenever comp re-render, handleSelectedAnswer will be re-created and handleSkip would be re-created  bcoz dependency of useCallback changed/handleselected changed=>
+    // that would make useEffect in QuestionTimer to run again.
+//To stop that, wrap handleSelectedAnswer in useCallback as well
+//------------------------------------------------------------------------
 //These two codes should only be executed if there is more questions left.
 //bcoz once <activeQuestionIndex> reaches the last index.Beyound that it will become undefined.
 //TypeError: Cannot read properties of undefined 
@@ -61,9 +66,12 @@ if(quizIsComplete)
   return (
     <><div id="quiz">
         <div id="question">
-        <QuestionTimer  timeout={10000} onTimeout={()=>{
-            handleSelectedAnswer(null)
-        }}/>
+        <QuestionTimer  timeout={10000} 
+        // onTimeout={()=>{handleSelectedAnswer(null)}}
+//whenever the jsx code is re-evaluated bcoz useState value changed, the anonymous function <()=>{handleSelectedAnswer(null)>
+//gets re-created again.Therefore, to stop it form being re-created again, wrap it inside useCallback.
+onTimeout={handleSkipAnswer}
+        />
             <h2>{QUSETIONS[activeQuestionIndex].text}</h2>
             <ul id="answers">
                 {

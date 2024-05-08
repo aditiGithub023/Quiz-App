@@ -33,6 +33,10 @@ const handleSkipAnswer=useCallback(()=>{handleSelectedAnswer(null)},[handleSelec
 //Now whenever comp re-render, handleSelectedAnswer will be re-created and handleSkip would be re-created  bcoz dependency of useCallback changed/handleselected changed=>
     // that would make useEffect in QuestionTimer to run again.
 //To stop that, wrap handleSelectedAnswer in useCallback as well
+
+
+
+
 //------------------------------------------------------------------------
 //These two codes should only be executed if there is more questions left.
 //bcoz once <activeQuestionIndex> reaches the last index.Beyound that it will become undefined.

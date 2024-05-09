@@ -1,57 +1,54 @@
-//want to use this component to show the currently active question to the user.
-//and when the user clicks on a question, I want to switch to a different question.
-//so this comp is responsible for switching questions and for registering answers.
+//use useState to highlight the color  and the state will have values =>"answered","correct"."wrong"
+//and then use the state value to update the styling of the answer.
+//after 1 second I will show if the ans was correct or wrong =>setTimeOut
 import React, { useCallback } from "react";
 import { useState } from "react";
 import QUSETIONS from "../questions";
 import quizCompleteImg from "../assets/quiz-complete.png";
 import QuestionTimer from "./QuestionTimer";
 function Quiz() {
-  //STORE index of current question
-  // const [activeQuestionIndex,setActiveQuestionIndex]=useState(0); -but this is a redundant way . You can find the indexof questopn by using userAnswers Array
-  //---------------------
-  //store option selected by users in an array
+  const [answerState, setAnswerState] = useState("");
   const [userAnswers, setUserAnswers] = useState([]);
 
-  const activeQuestionIndex = userAnswers.length;
-  // If we have stored two answers for question 1 and 2 at index 0,1
-  //then length of userAnswers is userAnswer.length=2
-  // and  we have to show the third question(question at index 2).
-  //Hence, activeQuestionIndex=2=userAnswer.length
+//   const activeQuestionIndex = userAnswers.length;
+const activeQuestionIndex=(answerState==='' ? userAnswers.length:userAnswers.length-1);
 
-  const handleSelectedAnswer = useCallback(function handleSelectedAnswer(
-    selectedOption
-  ) {
-    //when state is updated,entire state gets overrwitten.
-    //Therefore, always copy the previous data and then add new data point.
-    setUserAnswers((prev) => {
-      return [...prev, selectedOption];
-    });
-  },
-  []);
-  //if handleSelectedAnswer were using any prop or state value, we would have added it inside it's dependencies.
+  const handleSelectedAnswer = useCallback(
+    function handleSelectedAnswer(selectedOption) {
+      setAnswerState("answered");
+      //now after 1sec, hightlight it red or green
+      setUserAnswers((prev) => {
+        return [...prev, selectedOption];
+      });
+      //But now we have a problem.we are updating the state 👆 in <setUserAnswers> 
+      //which would make the component re-render again and 
+      //and grow the length of array by 1 and we would instantly go to next question.
+      //Therefore, make <const activeQuestionIndex = userAnswers.length> conditional.
+      //-------------
+      //now after 1sec, hightlight it red or green
+      setTimeout(() => {
+        if (selectedOption === QUSETIONS[activeQuestionIndex].answers[0]) {
+          setAnswerState("correct");
+        } else {
+          setAnswerState("wrong");
+        }
+
+        //after  additional 2sec,go to the next question
+        setTimeout(()=>{
+            setAnswerState("");
+            // now activeQuestionIndex= userAnswers.length
+        },2000)
+      }, 1000);
+    },
+
+    [activeQuestionIndex]
+  );
+  //Now we will need to add <activeQuestionIndex> as we need handleSelectedAnswer to be re-created for each and every question.
 
   const handleSkipAnswer = useCallback(() => {
     handleSelectedAnswer(null);
   }, [handleSelectedAnswer]);
-  //Now whenever comp re-render, handleSelectedAnswer will be re-created and handleSkip would be re-created  bcoz dependency of useCallback changed/handleselected changed=>
-  // that would make useEffect in QuestionTimer to run again.
-  //To stop that, wrap handleSelectedAnswer in useCallback as well
 
-  //------------------------------------------------------------------------
-  //These two codes should only be executed if there is more questions left.
-  //bcoz once <activeQuestionIndex> reaches the last index.Beyound that it will become undefined.
-  //TypeError: Cannot read properties of undefined
-  //Therefore, moving them  below <if(quizIsComplete)>
-
-  //Going to use "sort method" which updates the actual array.Therefore, first copy it using spread operator
-
-  // const shuffledAnswers=[...QUSETIONS[activeQuestionIndex].answers];
-
-  //this will shuffle the array
-  // shuffledAnswers.sort(()=>Math.random()-0.5);
-
-  //THe user has answered all the questions if activeQuestionIndex=== QUESTIONS.length
   const quizIsComplete = activeQuestionIndex === QUSETIONS.length;
 
   //Show different content once all quiz questions are over.
@@ -91,16 +88,34 @@ function Quiz() {
           />
           <h2>{QUSETIONS[activeQuestionIndex].text}</h2>
           <ul id="answers">
-            {shuffledAnswers.map((element) => (
+            {shuffledAnswers.map((element) => {
+                //last element of the array is the selected button <userAnswers[userAnswers.length-1]>
+                const selectedButton=(userAnswers[userAnswers.length-1] === element);
+                let cssClasses='';
+//These are the styling classes in index.css
+//the styling classes also have <.answer button.selected>,<.answer button.correct>,<.answer button.wrong>
+                if(answerState === 'answered' && selectedButton)
+                {
+                    //apply this class  <.answer button.selected>
+                    cssClasses='selected'
+                }
+
+                if((answerState === 'correct' || answerState === 'wrong') && selectedButton)
+                {
+                    cssClasses=answerState;
+                }
+                
+                
+                return (
               //  QUSETIONS[activeQuestionIndex].answers.map(...) => changed to shuffledAnswers.map(...)
               <li key={element} className="answer">
-                <button onClick={() => handleSelectedAnswer(element)}>
+                <button onClick={() => handleSelectedAnswer(element)} className={cssClasses}>
                   {element}
                 </button>
                 {/* <button onClick={handleSelectedAnswer}>{element}</button> */}
                 {/* Not enough to point at handleSecetedAnswer fun. */}
               </li>
-            ))}
+            )})}
           </ul>
         </div>
       </div>

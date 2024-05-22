@@ -1,12 +1,14 @@
 //use useState to highlight the color  and the state will have values =>"answered","correct"."wrong"
 //and then use the state value to update the styling of the answer.
 //after 1 second I will show if the ans was correct or wrong =>setTimeOut
-import React, { useCallback } from "react";
+import React, { useCallback, useRef } from "react";
 import { useState } from "react";
 import QUSETIONS from "../questions";
 import quizCompleteImg from "../assets/quiz-complete.png";
 import QuestionTimer from "./QuestionTimer";
 function Quiz() {
+  const shuffledAnswers=useRef(); //PARt 5 
+  //initial value of shuffledAnswer is undefined.
   const [answerState, setAnswerState] = useState("");
   const [userAnswers, setUserAnswers] = useState([]);
 
@@ -60,35 +62,29 @@ const activeQuestionIndex=(answerState==='' ? userAnswers.length:userAnswers.len
       </div>
     );
   }
-
-  const shuffledAnswers = [...QUSETIONS[activeQuestionIndex].answers];
-  shuffledAnswers.sort(() => Math.random() - 0.5);
+//undefined is interpreted as falsy.
+//PART 5-> stored in a ref.
+if(!shuffledAnswers.current){ //if it is undefined,then execute the code.
+shuffledAnswers.current = [...QUSETIONS[activeQuestionIndex].answers];
+  shuffledAnswers.current.sort(() => Math.random() - 0.5);
+}
+//now also use shuffledAnswers.current in jsx code as well.
 
   return (
     <>
       <div id="quiz">
         <div id="question">
           <QuestionTimer
-            //to start brand new progress bar for each question, we will add <key> prop. key is a built-in prop.
-            //Key prop can be added to any element and any component.
-            //PURPOSE ONE:key is used in element in cases like when you have to output list data using map bcoz there this key helps react
-            //identify those list different list items
-            // ---------------------------
-            //PURPOSE TWO: Whenever the key prop changes on a component
-            //react will destroy old component instance
-            //and create a new one.It will unmount and remount the component.
             //So, by using <key> prop here, we are re-creating <QuestionTimer> comp whenEver the questionIndex changes.
             key={activeQuestionIndex}
             //---------------------
-            // onTimeout={()=>{handleSelectedAnswer(null)}}
-            //whenever the jsx code is re-evaluated bcoz useState value changed, the anonymous function <()=>{handleSelectedAnswer(null)>
-            //gets re-created again.Therefore, to stop it form being re-created again, wrap it inside useCallback.
             onTimeout={handleSkipAnswer}
             timeout={10000}
           />
           <h2>{QUSETIONS[activeQuestionIndex].text}</h2>
           <ul id="answers">
-            {shuffledAnswers.map((element) => {
+          {/* PART5 */}
+            {shuffledAnswers.current.map((element) => {
                 //last element of the array is the selected button <userAnswers[userAnswers.length-1]>
                 const selectedButton=(userAnswers[userAnswers.length-1] === element);
                 let cssClasses='';

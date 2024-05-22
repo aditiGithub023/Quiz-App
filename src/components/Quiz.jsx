@@ -129,5 +129,12 @@ export default Quiz;
 // But now you will notice as your selected button changes color=>it jumps around.
 //This is because we are using a state to help change color.Hence as state makes comp re-render.The options gets shuffled at every re-render.
 //Hence your chosen option jumps around as it changes color.
-//Therefore, time to split the Quiz code to solve this problem.
-//do <git checkout part4>
+
+
+
+
+//
+// if (answerState === "") {
+//   shuffledAnswers.current = [...QUESTIONS[activeQuestionIndex].answers];
+//   shuffledAnswers.current.sort(() => Math.random() - 0.5);
+// }

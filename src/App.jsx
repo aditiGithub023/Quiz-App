@@ -41,4 +41,5 @@ export default App;
 //     shuffledAnswers.current.sort(() => Math.random() - 0.5);
 //   }
 
-//BUT how do I re-set ShuffledAnswers when new Question arrives(QUIZ.JSX)=> Go to part6(199-watch from 5.45)
+//BUT how do I re-set ShuffledAnswers when new Question arrives(QUIZ.JSX)=> part66(199-watch from 5.45)
+//Quiz.jsx and Answers.jsx()

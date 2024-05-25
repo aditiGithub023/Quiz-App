@@ -1,13 +1,14 @@
 //use useState to highlight the color  and the state will have values =>"answered","correct"."wrong"
 //and then use the state value to update the styling of the answer.
 //after 1 second I will show if the ans was correct or wrong =>setTimeOut
-import React, { useCallback, useRef } from "react";
+import React, { useCallback} from "react";
 import { useState } from "react";
 import QUSETIONS from "../questions";
 import quizCompleteImg from "../assets/quiz-complete.png";
 import QuestionTimer from "./QuestionTimer";
+import Answers from "./Answers";
 function Quiz() {
-  const shuffledAnswers=useRef(); //PARt 5 
+
   //initial value of shuffledAnswer is undefined.
   const [answerState, setAnswerState] = useState("");
   const [userAnswers, setUserAnswers] = useState([]);
@@ -64,55 +65,28 @@ const activeQuestionIndex=(answerState==='' ? userAnswers.length:userAnswers.len
   }
 //undefined is interpreted as falsy.
 //PART 5-> stored in a ref.
-if(!shuffledAnswers.current){ //if it is undefined,then execute the code.
-shuffledAnswers.current = [...QUSETIONS[activeQuestionIndex].answers];
-  shuffledAnswers.current.sort(() => Math.random() - 0.5);
-}
+
 //now also use shuffledAnswers.current in jsx code as well.
 
   return (
     <>
       <div id="quiz">
-        <div id="question">
+        <div id="question"   key={activeQuestionIndex}>
           <QuestionTimer
             //So, by using <key> prop here, we are re-creating <QuestionTimer> comp whenEver the questionIndex changes.
-            key={activeQuestionIndex}
+            // key={activeQuestionIndex}
             //---------------------
             onTimeout={handleSkipAnswer}
             timeout={10000}
           />
           <h2>{QUSETIONS[activeQuestionIndex].text}</h2>
-          <ul id="answers">
-          {/* PART5 */}
-            {shuffledAnswers.current.map((element) => {
-                //last element of the array is the selected button <userAnswers[userAnswers.length-1]>
-                const selectedButton=(userAnswers[userAnswers.length-1] === element);
-                let cssClasses='';
-//These are the styling classes in index.css
-//the styling classes also have <.answer button.selected>,<.answer button.correct>,<.answer button.wrong>
-                if(answerState === 'answered' && selectedButton)
-                {
-                    //apply this class  <.answer button.selected>
-                    cssClasses='selected'
-                }
-
-                if((answerState === 'correct' || answerState === 'wrong') && selectedButton)
-                {
-                    cssClasses=answerState;
-                }
-                
-                
-                return (
-              //  QUSETIONS[activeQuestionIndex].answers.map(...) => changed to shuffledAnswers.map(...)
-              <li key={element} className="answer">
-                <button onClick={() => handleSelectedAnswer(element)} className={cssClasses}>
-                  {element}
-                </button>
-                {/* <button onClick={handleSelectedAnswer}>{element}</button> */}
-                {/* Not enough to point at handleSecetedAnswer fun. */}
-              </li>
-            )})}
-          </ul>
+          {/* Reshuffle as the question changes, Create a new component instance when a new question arrives.Key prop useCase */}
+       <Answers 
+      //  key={activeQuestionIndex+1}
+       onSelect={handleSelectedAnswer} //element argumen will automatically be passed to handleSelectedAnswer.So it is enough to simply point to it.
+       answers={QUSETIONS[activeQuestionIndex].answers} 
+       selectedAnswer={userAnswers[userAnswers.length-1]} 
+       answerState={answerState}/>
         </div>
       </div>
     </>
@@ -122,15 +96,14 @@ shuffledAnswers.current = [...QUSETIONS[activeQuestionIndex].answers];
 export default Quiz;
 
 
-// But now you will notice as your selected button changes color=>it jumps around.
-//This is because we are using a state to help change color.Hence as state makes comp re-render.The options gets shuffled at every re-render.
-//Hence your chosen option jumps around as it changes color.
-
-
-
-
-//
-// if (answerState === "") {
-//   shuffledAnswers.current = [...QUESTIONS[activeQuestionIndex].answers];
-//   shuffledAnswers.current.sort(() => Math.random() - 0.5);
-// }
+// But now you will notice => the application is behaving weirdly. The=is is because you have used same key on both component. 
+//Key should be unique.
+// Also   <Answers> and <QuestionTimer> are sibling. They have same parent.Another reason for them to not have same key.
+//Solution 1-
+// <Answers  key={activeQuestionIndex+1} .../>
+//<QuestionTimer key={activeQuestionIndex} .../>
+// solution 2-
+//   only parent div willl have key prop and not answers or QuestionTimer component  <div id="question"  key={activeQuestionIndex}>
+//Solution 3- Max's solution 
+//Make another component that will have  <Answers> and <QuestionTimer> component and it will have key prop.
+//I think this is preferd bcoz in react we should make as many component as much as possible.

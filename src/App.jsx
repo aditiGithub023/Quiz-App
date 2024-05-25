@@ -43,3 +43,5 @@ export default App;
 
 //BUT how do I re-set ShuffledAnswers when new Question arrives(QUIZ.JSX)=> part66(199-watch from 5.45)
 //Quiz.jsx and Answers.jsx()
+
+//PART 77- more splitting. Max's solution for making key prop unique.

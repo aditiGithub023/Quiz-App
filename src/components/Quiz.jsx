@@ -104,6 +104,6 @@ export default Quiz;
 //<QuestionTimer key={activeQuestionIndex} .../>
 // solution 2-
 //   only parent div willl have key prop and not answers or QuestionTimer component  <div id="question"  key={activeQuestionIndex}>
-//Solution 3- Max's solution 
+//Solution 3- Max's solution (part-77)
 //Make another component that will have  <Answers> and <QuestionTimer> component and it will have key prop.
 //I think this is preferd bcoz in react we should make as many component as much as possible.

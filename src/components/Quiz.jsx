@@ -5,8 +5,7 @@ import React, { useCallback} from "react";
 import { useState } from "react";
 import QUSETIONS from "../questions";
 import quizCompleteImg from "../assets/quiz-complete.png";
-import QuestionTimer from "./QuestionTimer";
-import Answers from "./Answers";
+import Question from "./Question";
 function Quiz() {
 
   //initial value of shuffledAnswer is undefined.
@@ -71,23 +70,21 @@ const activeQuestionIndex=(answerState==='' ? userAnswers.length:userAnswers.len
   return (
     <>
       <div id="quiz">
-        <div id="question"   key={activeQuestionIndex}>
-          <QuestionTimer
-            //So, by using <key> prop here, we are re-creating <QuestionTimer> comp whenEver the questionIndex changes.
-            // key={activeQuestionIndex}
-            //---------------------
-            onTimeout={handleSkipAnswer}
-            timeout={10000}
-          />
-          <h2>{QUSETIONS[activeQuestionIndex].text}</h2>
-          {/* Reshuffle as the question changes, Create a new component instance when a new question arrives.Key prop useCase */}
-       <Answers 
-      //  key={activeQuestionIndex+1}
-       onSelect={handleSelectedAnswer} //element argumen will automatically be passed to handleSelectedAnswer.So it is enough to simply point to it.
-       answers={QUSETIONS[activeQuestionIndex].answers} 
-       selectedAnswer={userAnswers[userAnswers.length-1]} 
-       answerState={answerState}/>
-        </div>
+      {/* PART 77 */}
+      <Question 
+      //----------Use one single key prop to re-create the Question Component and 
+      //hence the Answers and QuestionTimer component when question changes.
+      key={activeQuestionIndex}
+//----------------For heading ----------------------------------
+      questionText={QUSETIONS[activeQuestionIndex].text} 
+      //--------------------------------------for Answer component-------
+      answers={QUSETIONS[activeQuestionIndex].answers}
+      onSelectAnswer={handleSelectedAnswer}
+      selectedAnswer={userAnswers[userAnswers.length - 1]}
+       answerState={answerState}
+//-------------------------------------------for QuestionTimer component----------
+onSkip={handleSkipAnswer}
+      />
       </div>
     </>
   );
@@ -106,4 +103,5 @@ export default Quiz;
 //   only parent div willl have key prop and not answers or QuestionTimer component  <div id="question"  key={activeQuestionIndex}>
 //Solution 3- Max's solution (part-77)
 //Make another component that will have  <Answers> and <QuestionTimer> component and it will have key prop.
-//I think this is preferd bcoz in react we should make as many component as much as possible.
+//I think this is preferd bcoz in react we should make as many component as much as possible and now we will use one single key on QuestionComponent
+//Part 7-solution 3 

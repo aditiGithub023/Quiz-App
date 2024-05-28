@@ -57,5 +57,9 @@ export default App;
 //Part 9 me I am removing all the comments or old code for better readability.
 //some issues- if we pick an answer a bit too late, the progress bar timer will expire 
 //& we will switch to next question without displaying if the answer was right or wrong.
-// and we have mutiple timers going on at the same time.
+// and we have mutiple timers going on at the same time. bcoz of 2000 sec nested timer- it will move to the next question an also the setUSERAnswers wil move you to the next question 
 //Go to part 10: video 201
+//Explainig this line- and we have mutiple timers going on at the same time.
+//when we select an answer too late-> one way of moving to next question and storing an answer is if an ans was skipped bcoz the timer expired.
+//2nd way is that we recieved an answer from the user bcoz ans was selected
+//now both things happen if we select an answer too late

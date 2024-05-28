@@ -9,7 +9,8 @@ import React, { useState,useEffect} from 'react'
 //Therefore, we will accept a function prop(onTimeOut) INSIDE setTimeOut which will fire once the timer expires.
 
 //We want the component to be re-created for each and every question.For this we have used <key> prop in Quiz.jsx.
-function QuestionTimer({timeout,onTimeout}) {
+//mode prop is for styling purpose
+function QuestionTimer({timeout,onTimeout,mode}) {
   
 
 const [remainingTime,setRemainingTime]=useState(timeout);
@@ -30,7 +31,10 @@ return ()=>clearTimeout(timer);
 useEffect(()=>{
   console.log('SETTING INTERVAL');
   const interval=setInterval(()=>{
-    setRemainingTime(prev=>prev-100)
+    setRemainingTime(prev=>prev-100) 
+    // ----------- PART 10--------------------------------------
+    //still using prev value of old timer. Therefore, need to use Key prop to re-create it for new timers.
+    //setTimeOut gets re-set without key prop as well as max={timeOut} in progress html element.
   },100)
 
   return ()=>clearInterval(interval);
@@ -43,7 +47,7 @@ useEffect(()=>{
 //Hence setTimeOut needs to be wrapped in useEffect.
 
 return (
-    <progress  id="question-time" max={timeout} value={remainingTime}/>
+    <progress  id="question-time" max={timeout} value={remainingTime} className={mode}/>
   )
 }
 

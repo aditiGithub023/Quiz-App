@@ -16,6 +16,22 @@ function Question({
     isCorrect: null,
   });
 
+//PART 10---------------------------------------------------------
+let timer=10000; //default progress bar timer value
+
+//if ans is selected, re-set pogress bar time to new timer value
+if(answer.selectedAnswer)
+  {
+    timer=1000;
+  }//I will reveal if ans was correct or wrong after 10 ms
+
+  if(answer.selectedAnswer && answer.isCorrect !== null)
+    {
+      //move to next question after 2000 ms
+      timer=2000;
+    }
+
+//--------------------------------------------
   function handleChoosenAnswer(answer) { //answer coming from 'onSelect' in Answers component.
     setAnswer({
       selectedAnswer: answer,
@@ -48,7 +64,18 @@ function Question({
 
   return (
     <div id="question">
-      <QuestionTimer onTimeout={onSkip} timeout={40000} />
+    {/* PART 10---------------------------------------------------------- */}
+      <QuestionTimer 
+      key={timer} //force the interval to be re-created.
+      // onTimeout={onSkip} 
+      //Now when the timer expires we register a null answer and store it in the answer storing array 
+      //and increase the activeQuestionIndex by 1 and skip a question.
+      //TO solve this, we only call onSkip if we have deliberately not selected answer
+      //otherwise I don call any function.
+      onTimeout={answer.selectedAnswer === ''?onSkip:null}
+      timeout={timer}
+      mode={StateofAns} />
+      {/* PART 10--------------------------------------------------------------------------- */}
       {/* <h2>{questionText}</h2> */}
       <h2>{QUSETIONS[QuestionIndex].text}</h2>
 

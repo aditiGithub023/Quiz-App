@@ -1,8 +1,8 @@
 import React from 'react';
 import { useRef } from 'react';
 //Output list of shuffled answers.
-//Move shuffling logic here+ useRef.
-// answers prop-array of options (or jsut import Questions file.)
+//Move shuffling logic here=> useRef.
+// answers prop-array of options (or just import Questions file.)
 //onSelect is handleSelectedAnswer function
 //selectedAnswers is last element of the array <userAnswers[userAnswers.length-1]>
 function Answers({answers,selectedAnswer,answerState,onSelect}) {

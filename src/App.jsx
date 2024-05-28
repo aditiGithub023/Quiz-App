@@ -45,4 +45,9 @@ export default App;
 //Quiz.jsx and Answers.jsx()
 
 //PART 77- more splitting. Max's solution for making key prop unique.(Question.jsx and Quiz.jsx)
-//Look at Question.jsx component and its prop in Quiz.jsx
+//Look at Question.jsx component and its prop in Quiz.jsx(lots of prop passing)
+
+//PART8- Section 200- Moving Logic to Components that actually Need it.
+//We can move these two useStates to Question component and turn them into single object and make brand new hanldeSelectAnswer.
+//We are trying to avoid prop drilling/decrease the amount of prop passing.
+//Quiz and Question.jsx component.(see how the number of props was decreased and see the jsx code.)

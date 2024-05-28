@@ -8,17 +8,23 @@ import quizCompleteImg from "../assets/quiz-complete.png";
 import Question from "./Question";
 function Quiz() {
 
-  //initial value of shuffledAnswer is undefined.
-  const [answerState, setAnswerState] = useState("");
-  const [userAnswers, setUserAnswers] = useState([]);
+  //PART8
+  //Move these component to Question.jsx and make only 1 useState that is an object 
+  //Example for a useState that does not need to be lifted up.
+  // const [answerState, setAnswerState] = useState("");
+  // const [userAnswers, setUserAnswers] = useState([]);
 
-//   const activeQuestionIndex = userAnswers.length;
-const activeQuestionIndex=(answerState==='' ? userAnswers.length:userAnswers.length-1);
+  //------------------------------------***---------------------------------------
+//But we still need this one state to find out when the quiz is over.👇
+const [userAnswers, setUserAnswers] = useState([]);
+// const activeQuestionIndex=(answerState==='' ? userAnswers.length:userAnswers.length-1);
+const activeQuestionIndex=userAnswers.length //wil now be updated from inside the Question Compoent.
+//See Question Component fro more explanantion.
+  //------------------------------------***---------------------------------------
 
   const handleSelectedAnswer = useCallback(
     function handleSelectedAnswer(selectedOption) {
-      setAnswerState("answered");
-      //now after 1sec, hightlight it red or green
+      // setAnswerState("answered");
       setUserAnswers((prev) => {
         return [...prev, selectedOption];
       });
@@ -28,22 +34,22 @@ const activeQuestionIndex=(answerState==='' ? userAnswers.length:userAnswers.len
       //Therefore, make <const activeQuestionIndex = userAnswers.length> conditional.
       //-------------
       //now after 1sec, hightlight it red or green
-      setTimeout(() => {
-        if (selectedOption === QUSETIONS[activeQuestionIndex].answers[0]) {
-          setAnswerState("correct");
-        } else {
-          setAnswerState("wrong");
-        }
+      // setTimeout(() => { 
+      //   if (selectedOption === QUSETIONS[activeQuestionIndex].answers[0]) {
+      //     setAnswerState("correct");
+      //   } else {
+      //     setAnswerState("wrong");
+      //   }
 
-        //after  additional 2sec,go to the next question
-        setTimeout(()=>{
-            setAnswerState("");
-            // now activeQuestionIndex= userAnswers.length
-        },2000)
-      }, 1000);
+      //   //after  additional 2sec,go to the next question
+      //   setTimeout(()=>{
+      //       setAnswerState("");
+      //       // now activeQuestionIndex= userAnswers.length
+      //   },2000)
+      // }, 1000);
     },
-
-    [activeQuestionIndex]
+[]
+    // [activeQuestionIndex]-no longer neede
   );
   //Now we will need to add <activeQuestionIndex> as we need handleSelectedAnswer to be re-created for each and every question.
 
@@ -74,14 +80,17 @@ const activeQuestionIndex=(answerState==='' ? userAnswers.length:userAnswers.len
       <Question 
       //----------Use one single key prop to re-create the Question Component and 
       //hence the Answers and QuestionTimer component when question changes.
+      //Key prop is exclusivley reserved for react and must not be used by us.
+      //Therefore, we should pick our own prop, even though it contains the same value as the key prop.
+      QuestionIndex={activeQuestionIndex}
       key={activeQuestionIndex}
 //----------------For heading ----------------------------------
-      questionText={QUSETIONS[activeQuestionIndex].text} 
+      // questionText={QUSETIONS[activeQuestionIndex].text} -no longer needed(bcoz we finally imported Questions file)
       //--------------------------------------for Answer component-------
-      answers={QUSETIONS[activeQuestionIndex].answers}
+      // answers={QUSETIONS[activeQuestionIndex].answers} -no longer needed(bcoz we finally imported Questions file)
       onSelectAnswer={handleSelectedAnswer}
-      selectedAnswer={userAnswers[userAnswers.length - 1]}
-       answerState={answerState}
+      // selectedAnswer={userAnswers[userAnswers.length - 1]} -no longer needed  (due to object useState)
+      //  answerState={answerState} -no longer needed (due to object useState)
 //-------------------------------------------for QuestionTimer component----------
 onSkip={handleSkipAnswer}
       />

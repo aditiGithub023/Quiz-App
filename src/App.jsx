@@ -51,3 +51,7 @@ export default App;
 //We can move these two useStates to Question component and turn them into single object and make brand new hanldeSelectAnswer.
 //We are trying to avoid prop drilling/decrease the amount of prop passing.
 //Quiz and Question.jsx component.(see how the number of props was decreased and see the jsx code.)
+//we have added disabled button in Answers.jsx
+//and we have removed all setTimeOut code in Quiz.jsx and moved that setTimeOut code into Question.jsx
+//and all the css color code is in Answers.jsx and not in Quiz.jsx.
+//Part 9 me I am removing all the comments or old code for better readability.

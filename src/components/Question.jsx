@@ -56,11 +56,11 @@ if(answer.selectedAnswer && answer.isCorrect !== null )
   {//we have marked our answer and we have not evaluated whether our ans in correct or not.
     StateofAns=answer.isCorrect?'correct':'wrong'; //'correct(green)'- 'wrong(red)' are css classNames.
   }
-  else{//we have marked the answer and isCorrect is null. WE have not yet evaluated if our answer is correct or not
+ else if (answer.selectedAnswer){//we have marked the answer and isCorrect is null. WE have not yet evaluated if our answer is correct or not
     StateofAns='answered';
   }
   //Now remove the 'answeState prop' and pass 'StateofAns' in Answers component.
-
+ 
   return (
     <div id="question">
       <QuestionTimer onTimeout={onSkip} timeout={40000} />

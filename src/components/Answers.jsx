@@ -37,7 +37,7 @@ function Answers({answers,selectedAnswer,answerState,onSelect}) {
         //  QUSETIONS[activeQuestionIndex].answers.map(...) => changed to shuffledAnswers.map(...)
         <li key={element} className="answer">
           <button onClick={() =>onSelect(element)} className={cssClasses} 
-           disabled={answerState !== ''} //If answerState is not an empty stric it means the answer has been marked and we dont want the user to switch b/w answers.
+           disabled={answerState !== ''} //If answerState is not an empty string it means the answer has been marked and we dont want the user to switch b/w answers.
           >
             {element}
           </button>

@@ -55,3 +55,7 @@ export default App;
 //and we have removed all setTimeOut code in Quiz.jsx and moved that setTimeOut code into Question.jsx
 //and all the css color code is in Answers.jsx and not in Quiz.jsx.
 //Part 9 me I am removing all the comments or old code for better readability.
+//some issues- if we pick an answer a bit too late, the progress bar timer will expire 
+//& we will switch to next question without displaying if the answer was right or wrong.
+// and we have mutiple timers going on at the same time.
+//Go to part 10: video 201

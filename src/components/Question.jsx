@@ -25,7 +25,7 @@ if(answer.selectedAnswer)
     timer=1000;
   }//I will reveal if ans was correct or wrong after 10 ms
 
-  if(answer.selectedAnswer && answer.isCorrect !== null)
+  if(answer.selectedAnswer && answer.isCorrect !== null) //ab we have already highlighted the ans red/green
     {
       //move to next question after 2000 ms
       timer=2000;

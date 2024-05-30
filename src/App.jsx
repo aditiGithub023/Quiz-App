@@ -60,11 +60,11 @@ export default App;
 // and we have mutiple timers going on at the same time. bcoz of 2000 sec nested timer- it will move to the next question 
 //an also the setUSERAnswers wil move you to the next question 
 //PART 9- no changes same as PART 8.
-//Go to part 10: video 201
+//Go to part 10: video 201 and video 202(setting different timer based on selected answer.)
 //Explainig this line- and we have mutiple timers going on at the same time.
 // one way of moving to next question and storing an answer is if an ans was skipped bcoz the timer expired.
 //2nd way is that we recieved an answer from the user bcoz ans was selected
 //now both things happen if we select an answer too late
 //Question.jsx and QuestionTimer.jsx
-//GO to PART 11- video 202.
+//GO to PART 11- video 203.
 

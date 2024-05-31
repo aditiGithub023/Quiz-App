@@ -66,5 +66,9 @@ export default App;
 //2nd way is that we recieved an answer from the user bcoz ans was selected
 //now both things happen if we select an answer too late
 //Question.jsx and QuestionTimer.jsx
-//GO to PART 11- video 203.
+//GO to PART 11- video 203- summary.jsx (PROJECT FINISHED !!!!!! )
+//print the question and asnwer selected by user and hight light the ans selected by user red/green/grey depending of wheter ns selected was skipped/correct/wrong.
+//For this  we are Dynamically deriving css class. See JSX code of summary.jsx.
+//Summary.jsx is getting userAnswer array(stores ans of users.) having as a prop .
+
 

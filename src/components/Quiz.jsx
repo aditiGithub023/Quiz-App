@@ -4,8 +4,9 @@
 import React, { useCallback} from "react";
 import { useState } from "react";
 import QUSETIONS from "../questions";
-import quizCompleteImg from "../assets/quiz-complete.png";
+// import quizCompleteImg from "../assets/quiz-complete.png";
 import Question from "./Question";
+import Summary from "./Summary";
 function Quiz() {
 
   //------------------------------------***---------------------------------------
@@ -38,10 +39,11 @@ const activeQuestionIndex=userAnswers.length //wil now be updated from inside th
   //Show different content once all quiz questions are over.
   if (quizIsComplete) {
     return (
-      <div id="summary">
-        <img src={quizCompleteImg} alt="Trophy Icon" />
-        <h2>Quiz Complete !</h2>
-      </div>
+      // <div id="summary">
+      //   <img src={quizCompleteImg} alt="Trophy Icon" />
+      //   <h2>Quiz Complete !</h2>
+      // </div>
+      <Summary userAnswers={userAnswers} />
     );
   }
 
